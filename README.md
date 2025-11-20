@@ -1,3 +1,5 @@
+<img width="1536" height="600" alt="image" src="https://github.com/user-attachments/assets/30237a55-7fb9-4c64-8b04-8acf006f566b" />
+
 # 🏰 Slay the Spire – Trabalho Prático (UFMG)
 
 Este projeto é uma implementação, em C com **Allegro 5**, de um jogo inspirado em *Slay the Spire*, desenvolvido como Trabalho Prático da disciplina de Programação da UFMG.
