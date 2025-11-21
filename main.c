@@ -78,36 +78,34 @@ int main() {
 
     while (1) {
 
-        // Espera evento e armazena em 'event'
         al_wait_for_event(queue, &event);
 
         // Flags de controle
         int done = 0, redraw = 0;
 
-        // Processa tipos de evento
+        
         switch (event.type) {
             case ALLEGRO_EVENT_TIMER:
                 redraw = 1;
                 if (keyboard_keys[ALLEGRO_KEY_Q]) {
-                    done = 1; // sair do jogo
+                    done = 1; 
                     break;
                 }
-                // limpa flags "seen" de todas as teclas
+                
                 for (int i = 0; i < ALLEGRO_KEY_MAX; i++)
                     keyboard_keys[i] &= ~GAME_KEY_SEEN;
                 break;
 
             case ALLEGRO_EVENT_KEY_DOWN:
                 if (!(keyboard_keys[event.keyboard.keycode] & GAME_KEY_DOWN)) {
-                    // tecla acabou de ser pressionada
                     keyboard_keys[event.keyboard.keycode] |= GAME_KEY_DOWN;
-                    keyboard_keys[event.keyboard.keycode] |= GAME_KEY_SEEN; // pode ser processada
+                    keyboard_keys[event.keyboard.keycode] |= GAME_KEY_SEEN; 
                 }
                 break;
 
             case ALLEGRO_EVENT_KEY_UP:
                 keyboard_keys[event.keyboard.keycode] &= ~GAME_KEY_DOWN;
-                keyboard_keys[event.keyboard.keycode] &= ~GAME_KEY_SEEN; // libera para próxima pressão
+                keyboard_keys[event.keyboard.keycode] &= ~GAME_KEY_SEEN; 
                 break;
 
 

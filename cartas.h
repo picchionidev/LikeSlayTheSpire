@@ -9,7 +9,7 @@
 typedef enum {
     ATAQUE,
     DEFESA,
-    ESPECIAL   // Carta especial (lógica a implementar)
+    ESPECIAL  
 } TipoCarta;
 
 // Struct que representa uma carta, contendo tipo e custo

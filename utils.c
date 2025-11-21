@@ -3,16 +3,14 @@
 #include <allegro5/allegro5.h>
 #include <stdio.h>
 
-//Serão feitos comentários no DevKit pra facilitar a minha e sua compreensão do código e dos pilares do Allegro
 
-	//Função de verificação de inicialização
 void must_init(_Bool test, const char* description) {
   if (test) return;
 
   fprintf(stderr, "couldn't initialize %s\n", description);
   exit(1);
 }
-	//Retorna quantos dígitos um número n inteiro tem.
+
 int NumToDigits(int n) {
   if (n < 0) return 1 + NumToDigits(-n);
   if (n < 10) return 1;
@@ -28,11 +26,10 @@ int NumToDigits(int n) {
      and adjust this final return as well. */
   return 10;
 }
-	//Zera (limpa) um array de teclas usado para guardar o estado do teclado.
+
 void ClearKeyboardKeys(unsigned char* keyboard_keys) {
   memset(keyboard_keys, 0, ALLEGRO_KEY_MAX * sizeof(unsigned char));
 }
-	//Mistura (embaralha) os elementos de um array de inteiros em ordem aleatória.
 void ShuffleArray(int* array, int size) {
   if (size > 1) {
     int i;

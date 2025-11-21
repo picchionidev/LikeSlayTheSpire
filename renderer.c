@@ -43,26 +43,26 @@ void DrawCenteredScaledText(ALLEGRO_FONT* font, ALLEGRO_COLOR color, float x,
 //
 void FillImagesProcedure(Renderer *renderer)
 {
-    renderer->img_bg = al_load_bitmap("C:/sts_user_final/assets/forest_bg.png");
+    renderer->img_bg = al_load_bitmap("assets/forest_bg.png");
 
-    renderer->img_card_ataque   = al_load_bitmap("C:/sts_user_final/assets/carta_ataque.png");
-    renderer->img_card_defesa   = al_load_bitmap("C:/sts_user_final/assets/carta_defesa.png");
-    renderer->img_card_especial = al_load_bitmap("C:/sts_user_final/assets/carta_especial.png");
+    renderer->img_card_ataque   = al_load_bitmap("assets/carta_ataque.png");
+    renderer->img_card_defesa   = al_load_bitmap("assets/carta_defesa.png");
+    renderer->img_card_especial = al_load_bitmap("assets/carta_especial.png");
 
-    renderer->img_enemy  = al_load_bitmap("C:/sts_user_final/assets/enemy.png");
-    renderer->img_weak_enemy = al_load_bitmap("C:/sts_user_final/assets/weak_enemy.png");
-    renderer->img_player = al_load_bitmap("C:/sts_user_final/assets/player.png");
+    renderer->img_enemy  = al_load_bitmap("assets/enemy.png");
+    renderer->img_weak_enemy = al_load_bitmap("assets/weak_enemy.png");
+    renderer->img_player = al_load_bitmap("assets/player.png");
 
-    renderer->img_energy_ring = al_load_bitmap("C:/sts_user_final/assets/energy_ring.png");
+    renderer->img_energy_ring = al_load_bitmap("assets/energy_ring.png");
 
-    renderer->img_health_bar = al_load_bitmap("C:/sts_user_final/assets/health_bar_translucid.png");
-    renderer->img_shield_bar = al_load_bitmap("C:/sts_user_final/assets/shield_bar_translucid.png");
+    renderer->img_health_bar = al_load_bitmap("assets/health_bar_translucid.png");
+    renderer->img_shield_bar = al_load_bitmap("assets/shield_bar_translucid.png");
 
-    renderer->img_pile = al_load_bitmap("C:/sts_user_final/assets/pile.png");
+    renderer->img_pile = al_load_bitmap("assets/pile.png");
 
-    renderer->img_combat_screen  = al_load_bitmap("C:/sts_user_final/assets/combat_screen.png");
-    renderer->img_game_over_screen = al_load_bitmap("C:/sts_user_final/assets/game_over_screen.png");
-    renderer->img_victory_screen = al_load_bitmap("C:/sts_user_final/assets/victory_screen.png");
+    renderer->img_combat_screen  = al_load_bitmap("assets/combat_screen.png");
+    renderer->img_game_over_screen = al_load_bitmap("assets/game_over_screen.png");
+    renderer->img_victory_screen = al_load_bitmap("assets/victory_screen.png");
 
     must_init(renderer->img_bg != NULL, "forest background");
 
@@ -81,10 +81,11 @@ void FillImagesProcedure(Renderer *renderer)
 
     must_init(renderer->img_pile != NULL, "deck pile sprite");
 
-    must_init(renderer->img_combat_screen != NULL, "victory combat screen");
+    must_init(renderer->img_combat_screen != NULL, "combat screen");
     must_init(renderer->img_game_over_screen != NULL, "game over screen");
     must_init(renderer->img_victory_screen != NULL, "victory screen");
 }
+
 
 void FillRenderer(Renderer* renderer) {
     al_set_new_display_option(ALLEGRO_SAMPLE_BUFFERS, 1, ALLEGRO_SUGGEST);
