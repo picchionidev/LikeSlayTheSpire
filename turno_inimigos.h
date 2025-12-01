@@ -2,8 +2,7 @@
 #define TURNO_INIMIGOS_H
 
 #include "combate.h"
-
-// Executa o turno dos inimigos
+//Protótipo
 void turnoInimigos(Combate *combate);
 
 #endif

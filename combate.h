@@ -19,15 +19,15 @@ typedef enum {
 } EstadoSelecao;
 
 typedef struct {
-    Personagem jogador;       // Jogador
-    Inimigo inimigos[NUMINIMIGOS];// Dois inimigos por combate
+    Personagem jogador;        // Jogador
+    Inimigo inimigos[NUMINIMIGOS];// NUMINIMIGOS inimigos por combate
     Pilha pilhaCompras;       // Pilha de compras do jogador
     Pilha pilhaDescarte;      // Pilha de descarte do jogador
     Mao mao;                  // Mão atual do jogador
     TipoTurno turno;          // Variável para controlar o turno
     int alvoSelecionado;      // Inimigo a ser atacado
     int cartaSelecionada;     // índice da carta destacada
-    EstadoSelecao estadoSelecao; // modo atual de seleção
+    EstadoSelecao estadoSelecao; // Modo atual de seleção(Carta ou Inimigo)
     int energia;              // Energia atual do jogador
 } Combate;
 

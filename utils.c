@@ -22,8 +22,6 @@ int NumToDigits(int n) {
   if (n < 10000000) return 7;
   if (n < 100000000) return 8;
   if (n < 1000000000) return 9;
-  /*      2147483647 is 2^31-1 - add more ifs as needed
-     and adjust this final return as well. */
   return 10;
 }
 

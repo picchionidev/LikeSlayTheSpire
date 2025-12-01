@@ -38,7 +38,7 @@ void DrawCenteredScaledText(ALLEGRO_FONT* font, ALLEGRO_COLOR color, float x,
 
 //
 // ========================================================
-//         CARREGAMENTO DE ASSETS E INICIALIZAÇÃO
+//         CARREGAMENTO DE IMAGENS E INICIALIZAÇÃO
 // ========================================================
 //
 void FillImagesProcedure(Renderer *renderer)

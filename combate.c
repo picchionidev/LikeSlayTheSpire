@@ -39,7 +39,7 @@ void iniciarCombate(Combate *combate, Carta baralho[], int tamBaralho) {
     // Zerar a mão do jogador
     combate->mao.quantidade = 0;
 
-    combate->alvoSelecionado = 0;  // sempre começa selecionando o primeiro inimigo
+    combate->alvoSelecionado = 0;  // Sempre começa selecionando o primeiro inimigo
 	
 	//Inicialização do turno
 	combate->turno = TURNO_JOGADOR;
@@ -51,7 +51,7 @@ void iniciarCombate(Combate *combate, Carta baralho[], int tamBaralho) {
 int combateTerminado(Combate *combate) {
     // Verifica se o jogador morreu
     if (combate->jogador.base.vida <= 0)
-        return -1; // jogador perdeu
+        return -1; // Jogador perdeu
 
     // Verifica se todos os inimigos morreram
     int todosMortos = 1;
@@ -62,7 +62,7 @@ int combateTerminado(Combate *combate) {
         }
     }
     if (todosMortos)
-        return 1; // jogador venceu
+        return 1; // Jogador venceu
 
-    return 0; // combate continua
+    return 0; // Combate continua
 }

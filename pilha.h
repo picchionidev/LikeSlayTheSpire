@@ -3,7 +3,7 @@
 
 #include "cartas.h"
 
-// Representa uma pilha de cartas (por exemplo, compra ou descarte)
+// Representa uma pilha de cartas (compra ou descarte)
 typedef struct {
     Carta cartas[MAX_CARTAS];  // Vetor que guarda as cartas
     int topo;                  // Índice da próxima posição livre (quantas cartas há)

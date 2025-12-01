@@ -117,7 +117,7 @@ int main() {
         if (done) break;
 
         // =====================================================
-        // CONTROLES DO JOGADOR (TODOS COM CLIQUE ÚNICO)
+        // CONTROLES DO JOGADOR (CLIQUE ÚNICO)
         // =====================================================
 
         // SPACE: matar todos os inimigos
