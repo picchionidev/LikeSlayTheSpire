@@ -4,21 +4,33 @@
 #include "cartas.h" 
 
 void AjustarSelecaoInimigo(Combate* combate) {
-    // Se o alvo atual estiver vivo, tudo bem
-    if (combate->inimigos[combate->alvoSelecionado].base.vida > 0)
+    int atual = combate->alvoSelecionado;
+
+    // Se ainda estiver dentro do range e vivo, mantém
+    if (atual >= 0 && atual < NUMINIMIGOS &&
+        combate->inimigos[atual].base.vida > 0)
         return;
 
-    // Caso contrário, tenta achar o próximo vivo
-    for (int i = 0; i < NUMINIMIGOS; i++) {
+    // 1️⃣ Tenta achar um vivo à DIREITA
+    for (int i = atual + 1; i < NUMINIMIGOS; i++) {
         if (combate->inimigos[i].base.vida > 0) {
             combate->alvoSelecionado = i;
             return;
         }
     }
 
-    // Se não achou nenhum → não existe mais alvo
+    // 2️⃣ Se não achou, tenta à ESQUERDA
+    for (int i = atual - 1; i >= 0; i--) {
+        if (combate->inimigos[i].base.vida > 0) {
+            combate->alvoSelecionado = i;
+            return;
+        }
+    }
+
+    // 3️⃣ Nenhum encontrado → sem alvo
     combate->alvoSelecionado = -1;
 }
+
     
 void comprar5Cartas(Pilha *pilhaCompras, Pilha *pilhaDescarte, Mao *mao) {
     int i = 0;
@@ -89,11 +101,12 @@ int jogarCarta(Combate *combate, int indiceCarta, int alvo) {
         // Primeiro verifica se o inimigo morreu
         int inimigoMorreu = (combate->inimigos[alvo].base.vida == 0);
 
-        // Ajusta a seleção (muda 'alvo' se estiver morto)
-        AjustarSelecaoInimigo(combate);
         
-        // Se o inimigo morrer, volta para seleção de carta
+        
+        // Se o inimigo morrer, volta para seleção de carta e decrementa NumImnimigosVivos
             if (cartaEscolhida.tipo == ATAQUE && inimigoMorreu) {
+                // Ajusta a seleção (muda 'alvo' se estiver morto)
+                AjustarSelecaoInimigo(combate);
                 combate->estadoSelecao = SELECIONANDO_CARTA;
             }
         

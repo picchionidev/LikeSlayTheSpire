@@ -46,7 +46,8 @@ void adicionarCartas(Carta baralho[], int *indexBaralho, TipoCarta tipo, int qua
         baralho[*indexBaralho].tipo = tipo;       // define o tipo da carta
         baralho[*indexBaralho].custo = custo;     // define o custo da carta
         baralho[*indexBaralho].efeito = calcularEfeitoCarta(custo); // define o efeito da carta
-        (*indexBaralho)++; if (*indexBaralho > MAX_CARTAS) *indexBaralho = MAX_CARTAS; // incrementa o índice para a próxima carta
+        (*indexBaralho)++;// incrementa o índice para a próxima carta
+        if (*indexBaralho > MAX_CARTAS) *indexBaralho = MAX_CARTAS; 
     }
 }
 
@@ -102,7 +103,7 @@ void executarAcao(Carta carta, Entidade *atacante, Entidade *alvo) {
                 alvo->vida -= carta.efeito;
             }
 
-            // Garante que a vida do inimigo não fique negativa
+            // Garante que a vida do alvo não fique negativa
             if (alvo->vida < 0) alvo->vida = 0;
             break;
 

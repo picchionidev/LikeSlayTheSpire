@@ -87,15 +87,9 @@ void gerarVetorAcoes(Carta acoes[], int numAcoes, ForcaInimigo forca) {
                 custo1Usado = 1;
         }
     }
-
+    // Embaralha as ações no vetor(ataques e defesas aleatórios)--> Ações funcionam como cartas
+    embaralharCartas(acoes,numAcoes);
     
-    // Embaralha as ações no vetor(ataques e defesas aleatórios)
-    for (int i = 0; i < numAcoes; i++) {
-        int j = randInt(0, numAcoes - 1);
-        Carta temp = acoes[i];
-        acoes[i] = acoes[j];
-        acoes[j] = temp;
-    }
 }
 
 
@@ -111,7 +105,7 @@ Inimigo gerarInimigoAleatorio() {
     inimigo.acaoAtual = 0;
     inimigo.vidaMax = inimigo.base.vida;
 
-    // Gera as ações (ataque/defesa)
+    // Gera as ações (ataque/defesa) e as aplica ao inimigo gerado
     gerarVetorAcoes(inimigo.acoes, inimigo.numAcoes,inimigo.forca);
 
     return inimigo;

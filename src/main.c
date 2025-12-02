@@ -154,8 +154,16 @@ int main() {
             if (combate.estadoSelecao == SELECIONANDO_CARTA && combate.cartaSelecionada > 0)
                 combate.cartaSelecionada--;
 
-            else if (combate.estadoSelecao == SELECIONANDO_INIMIGO && combate.alvoSelecionado > 0)
-                combate.alvoSelecionado--;
+            else if (combate.estadoSelecao == SELECIONANDO_INIMIGO) {
+                int novo = combate.alvoSelecionado - 1;
+
+                while (novo >= 0 && combate.inimigos[novo].base.vida <= 0)
+                    novo--;
+
+                if (novo >= 0)
+                    combate.alvoSelecionado = novo;
+        }
+
         }
 
         // DIREITA
@@ -165,8 +173,18 @@ int main() {
             if (combate.estadoSelecao == SELECIONANDO_CARTA && combate.cartaSelecionada < combate.mao.quantidade - 1)
                 combate.cartaSelecionada++;
 
-            else if (combate.estadoSelecao == SELECIONANDO_INIMIGO && combate.alvoSelecionado < NUMINIMIGOS - 1)
-                combate.alvoSelecionado++;
+            else if (combate.estadoSelecao == SELECIONANDO_INIMIGO) {
+                int novo = combate.alvoSelecionado + 1;
+
+                // pular mortos
+                while (novo < NUMINIMIGOS && combate.inimigos[novo].base.vida <= 0)
+                    novo++;
+
+                // só muda se encontrou vivo
+                if (novo < NUMINIMIGOS)
+                    combate.alvoSelecionado = novo;
+            }
+
         }
 
         // =====================================================
@@ -183,8 +201,19 @@ int main() {
                 if (combate.estadoSelecao == SELECIONANDO_CARTA) {
 
                     if (cartaAtual.tipo == ATAQUE) {
-                        // precisa escolher inimigo
+
+                        // Checa a quantidade de energia restante
+                        if (combate.energia < cartaAtual.custo) {
+                            //ignora o ENTER
+                            continue;;
+                        }
+                        
+                        // Precisa escolher inimigo
                         combate.estadoSelecao = SELECIONANDO_INIMIGO;
+                        
+                        // Ajusta imediatamente para um inimigo vivo
+                        AjustarSelecaoInimigo(&combate);
+                        
                         // ajusta seleção para evitar índice fora da mão
                         if (combate.cartaSelecionada >= combate.mao.quantidade)
                             combate.cartaSelecionada = combate.mao.quantidade - 1;
