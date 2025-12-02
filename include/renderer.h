@@ -38,7 +38,7 @@ ALLEGRO_BITMAP *img_victory_screen;
 void FillRenderer(Renderer* renderer);
 void Render(Renderer* renderer, Combate *combate);
 void ClearRenderer(Renderer* renderer);
-void RenderVictoryScreen(Renderer* renderer, int vitorias);
+void RenderVictoryScreen(Renderer* renderer, int totalVitorias);
 void RenderGameOverScreen(Renderer* renderer);
 void RenderCombatVictory(Renderer* renderer);
 #endif

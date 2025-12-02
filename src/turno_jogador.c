@@ -11,7 +11,7 @@ void AjustarSelecaoInimigo(Combate* combate) {
         combate->inimigos[atual].base.vida > 0)
         return;
 
-    // 1️⃣ Tenta achar um vivo à DIREITA
+    // Tenta achar um vivo à DIREITA
     for (int i = atual + 1; i < NUMINIMIGOS; i++) {
         if (combate->inimigos[i].base.vida > 0) {
             combate->alvoSelecionado = i;
@@ -19,7 +19,7 @@ void AjustarSelecaoInimigo(Combate* combate) {
         }
     }
 
-    // 2️⃣ Se não achou, tenta à ESQUERDA
+    // Se não achou, tenta à ESQUERDA
     for (int i = atual - 1; i >= 0; i--) {
         if (combate->inimigos[i].base.vida > 0) {
             combate->alvoSelecionado = i;
@@ -27,7 +27,7 @@ void AjustarSelecaoInimigo(Combate* combate) {
         }
     }
 
-    // 3️⃣ Nenhum encontrado → sem alvo
+    // Nenhum encontrado → sem alvo
     combate->alvoSelecionado = -1;
 }
 

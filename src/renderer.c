@@ -108,17 +108,15 @@ void FillRenderer(Renderer* renderer) {
     FillImagesProcedure(renderer);
 }
 
-//
 // ========================================================
 //      RENDERIZAÇÕES SIMPLES / TELAS ESTÁTICAS
 // ========================================================
-//
-void RenderBackground(Renderer* renderer) {
+void RenderBackground(Renderer* render) {
     al_draw_scaled_bitmap(
-        renderer->img_bg,
+        render->img_bg,
         0, 0,
-        al_get_bitmap_width(renderer->img_bg),
-        al_get_bitmap_height(renderer->img_bg),
+        al_get_bitmap_width(render->img_bg),
+        al_get_bitmap_height(render->img_bg),
         0, 0,
         DISPLAY_BUFFER_WIDTH,
         DISPLAY_BUFFER_HEIGHT,
@@ -126,15 +124,15 @@ void RenderBackground(Renderer* renderer) {
     );
 }
 
-void RenderGameOverScreen(Renderer* renderer)
+void RenderGameOverScreen(Renderer* render)
 {
-    al_set_target_backbuffer(renderer->display);
+    al_set_target_backbuffer(render->display);
 
     al_draw_scaled_bitmap(
-        renderer->img_game_over_screen,
+        render->img_game_over_screen,
         0, 0,
-        al_get_bitmap_width(renderer->img_game_over_screen),
-        al_get_bitmap_height(renderer->img_game_over_screen),
+        al_get_bitmap_width(render->img_game_over_screen),
+        al_get_bitmap_height(render->img_game_over_screen),
         0, 0,
         DISPLAY_WIDTH,
         DISPLAY_HEIGHT,
@@ -144,15 +142,15 @@ void RenderGameOverScreen(Renderer* renderer)
     al_flip_display();
 }
 
-void RenderVictoryScreen(Renderer* renderer, int vitorias)
+void RenderVictoryScreen(Renderer* render, int totalVitorias)
 {
-    al_set_target_backbuffer(renderer->display);
+    al_set_target_backbuffer(render->display);
 
     al_draw_scaled_bitmap(
-        renderer->img_victory_screen,
+        render->img_victory_screen,
         0, 0,
-        al_get_bitmap_width(renderer->img_victory_screen),
-        al_get_bitmap_height(renderer->img_victory_screen),
+        al_get_bitmap_width(render->img_victory_screen),
+        al_get_bitmap_height(render->img_victory_screen),
         0, 0,
         DISPLAY_WIDTH,
         DISPLAY_HEIGHT,
@@ -162,15 +160,15 @@ void RenderVictoryScreen(Renderer* renderer, int vitorias)
     al_flip_display();
 }
 
-void RenderCombatVictory(Renderer* renderer)
+void RenderCombatVictory(Renderer* render)
 {
-    al_set_target_backbuffer(renderer->display);
+    al_set_target_backbuffer(renderizador->display);
 
     al_draw_scaled_bitmap(
-        renderer->img_combat_screen,
+        render->img_combat_screen,
         0, 0,
-        al_get_bitmap_width(renderer->img_combat_screen),
-        al_get_bitmap_height(renderer->img_combat_screen),
+        al_get_bitmap_width(render->img_combat_screen),
+        al_get_bitmap_height(render->img_combat_screen),
         0, 0,
         DISPLAY_WIDTH,
         DISPLAY_HEIGHT,
@@ -180,426 +178,145 @@ void RenderCombatVictory(Renderer* renderer)
     al_flip_display();
 }
 
-//
+
 // ========================================================
 //        ELEMENTOS PEQUENOS: DECK, BARRAS, ENERGIA
 // ========================================================
-//
-void RenderDeck(Renderer* renderer, int x_left, int y_top, int quantidade)
+void RenderDeck(Renderer* renderizador, int posX, int posY, int quantidadeCartas)
 {
-    ALLEGRO_BITMAP* prev = al_get_target_bitmap();
-    al_set_target_bitmap(renderer->display_buffer);
+    ALLEGRO_BITMAP* bufferAnterior = al_get_target_bitmap();
+    al_set_target_bitmap(renderizador->display_buffer);
 
-    ALLEGRO_BITMAP* img = renderer->img_pile;
+    ALLEGRO_BITMAP* imagemBaralho = renderizador->img_pile;
 
-    int original_w = al_get_bitmap_width(img);
-    int original_h = al_get_bitmap_height(img);
+    int larguraOriginal = al_get_bitmap_width(imagemBaralho);
+    int alturaOriginal  = al_get_bitmap_height(imagemBaralho);
 
-    float escala = 0.35;
+    float fatorEscala = 0.35;
 
-    int w = original_w * escala;
-    int h = original_h * escala;
+    int larguraFinal = larguraOriginal * fatorEscala;
+    int alturaFinal  = alturaOriginal  * fatorEscala;
 
     al_draw_scaled_bitmap(
-        img,
-        0, 0, original_w, original_h,
-        x_left, y_top, w, h,
+        imagemBaralho,
+        0, 0, larguraOriginal, alturaOriginal,
+        posX, posY, larguraFinal, alturaFinal,
         0
     );
 
-    float ajusteX = 0.43f;
-    float ajusteY = 0.40f;
+    float ajusteX = 0.43;
+    float ajusteY = 0.40;
 
-    float posTextoX = x_left + w * ajusteX;
-    float posTextoY = y_top  + h * ajusteY;
+    float posTextoX = posX + larguraFinal * ajusteX;
+    float posTextoY = posY + alturaFinal  * ajusteY;
 
-    char texto[16];
-    snprintf(texto, sizeof(texto), "%d", quantidade);
+    char textoQuantidade[16];
+    snprintf(textoQuantidade, sizeof(textoQuantidade), "%d", quantidadeCartas);
 
-    float scale = 2.0;
+    float escalaTexto = 2.0;
 
     DrawCenteredScaledText(
-        renderer->font,
+        renderizador->font,
         al_map_rgb(255, 255, 255),
-        posTextoX/scale, posTextoY/scale,
-        scale,scale,
-        texto
+        posTextoX / escalaTexto, posTextoY / escalaTexto,
+        escalaTexto, escalaTexto,
+        textoQuantidade
     );
 
-    al_set_target_bitmap(prev);
+    al_set_target_bitmap(bufferAnterior);
 }
 
-void RenderHealthBar(float x_begin, float x_end, float y_down_left,
-                     int vidaAtual, int vidaMax, ALLEGRO_FONT* font) {
-    float vidaProp = (float)vidaAtual / (float)vidaMax;
-    float x_bar_fim = x_begin + (x_end - x_begin) * vidaProp;
+void RenderHealthBar(float barraInicioX, float barraFimX, float posicaoY,
+                     int vidaAtual, int vidaMaxima, ALLEGRO_FONT* fonteTexto) {
+
+    float proporcaoVida = (float)vidaAtual / (float)vidaMaxima;
+    float barraVidaX = barraInicioX + (barraFimX - barraInicioX) * proporcaoVida;
 
     al_draw_filled_rounded_rectangle(
-        x_begin,
-        y_down_left - HEALTH_BAR_HEIGHT,
-        x_bar_fim,
-        y_down_left,
-        HEALTH_BAR_RX, HEALTH_BAR_RY, al_map_rgb(0, 255, 0));
+        barraInicioX,
+        posicaoY - HEALTH_BAR_HEIGHT,
+        barraVidaX,
+        posicaoY,
+        HEALTH_BAR_RX, HEALTH_BAR_RY,
+        al_map_rgb(0, 255, 0)
+    );
 
-    char text[20];
-    snprintf(text, sizeof(text), "%d / %d", vidaAtual, vidaMax);
-    float mid_x = (x_begin + x_end) / 2.0f;
-    float mid_y = y_down_left - HEALTH_BAR_HEIGHT / 2.0f;
+    char textoVida[20];
+    snprintf(textoVida, sizeof(textoVida), "%d / %d", vidaAtual, vidaMaxima);
 
-    DrawScaledText(font, al_map_rgb(0,0,0), mid_x, mid_y, 1.0f, 1.0f, ALLEGRO_ALIGN_CENTRE, text);
+    float centroX = (barraInicioX + barraFimX) / 2.0;
+    float centroY = posicaoY - HEALTH_BAR_HEIGHT / 2.0;
+
+    DrawScaledText(fonteTexto, al_map_rgb(0,0,0),
+                   centroX, centroY,
+                   1.0, 1.0,
+                   ALLEGRO_ALIGN_CENTRE,
+                   textoVida);
 }
 
-void RenderShieldBar(float x_begin, float x_end, float y_bottom, int shieldValue, int shieldMax, ALLEGRO_FONT* font) {
+void RenderShieldBar(float barraInicioX, float barraFimX, float posicaoY,
+                     int valorEscudo, int escudoMaximo, ALLEGRO_FONT* fonteTexto)
+{
+    float larguraEscudo = (barraFimX - barraInicioX) *
+                          ((float)valorEscudo / escudoMaximo);
 
-    float shieldWidth = (x_end - x_begin) * ((float)shieldValue / shieldMax);
     al_draw_filled_rounded_rectangle(
-        x_begin,
-        y_bottom - HEALTH_BAR_HEIGHT,
-        x_begin + shieldWidth,
-        y_bottom ,
-        HEALTH_BAR_RX, HEALTH_BAR_RY, al_map_rgb(0, 128, 255)
+        barraInicioX,
+        posicaoY - HEALTH_BAR_HEIGHT,
+        barraInicioX + larguraEscudo,
+        posicaoY,
+        HEALTH_BAR_RX, HEALTH_BAR_RY,
+        al_map_rgb(0, 128, 255)
     );
 
-    char text[16];
-    snprintf(text, sizeof(text), "%d", shieldValue);
-    float mid_y = y_bottom - HEALTH_BAR_HEIGHT / 2.0;
+    char textoEscudo[16];
+    snprintf(textoEscudo, sizeof(textoEscudo), "%d", valorEscudo);
 
-    DrawScaledText(font, al_map_rgb(255, 255, 255),
-                   (x_begin + x_end) / 2.0f, mid_y,
-                   1.0f, 1.0f, ALLEGRO_ALIGN_CENTRE, text);
+    float centroY = posicaoY - HEALTH_BAR_HEIGHT / 2.0f;
+
+    DrawScaledText(fonteTexto, al_map_rgb(255,255,255),
+                   (barraInicioX + barraFimX) / 2.0f, centroY,
+                   1.0f, 1.0f, ALLEGRO_ALIGN_CENTRE,
+                   textoEscudo);
 }
 
-void RenderEnergy(Renderer* renderer, int energiaAtual, int energiaMax)
+void RenderEnergy(Renderer* renderizador, int energiaAtual, int energiaMaxima)
 {
-    al_set_target_bitmap(renderer->display_buffer);
+    al_set_target_bitmap(renderizador->display_buffer);
 
-    ALLEGRO_BITMAP* imagem = renderer->img_energy_ring;
+    ALLEGRO_BITMAP* imagemEnergia = renderizador->img_energy_ring;
 
-    float escala = 0.20;
+    float fatorEscala = 0.20f;
 
-    int larguraOriginal = al_get_bitmap_width(imagem);
-    int alturaOriginal  = al_get_bitmap_height(imagem);
+    int larguraOriginal = al_get_bitmap_width(imagemEnergia);
+    int alturaOriginal  = al_get_bitmap_height(imagemEnergia);
 
-    int larguraNova = larguraOriginal * escala;
-    int alturaNova  = alturaOriginal  * escala;
+    int larguraFinal = larguraOriginal * fatorEscala;
+    int alturaFinal  = alturaOriginal  * fatorEscala;
 
     al_draw_scaled_bitmap(
-        imagem,
+        imagemEnergia,
         0, 0, larguraOriginal, alturaOriginal,
-        ENERGY_X - larguraNova/2,
-        ENERGY_Y - alturaNova/2,
-        larguraNova, alturaNova,
+        ENERGY_X - larguraFinal/2,
+        ENERGY_Y - alturaFinal/2,
+        larguraFinal, alturaFinal,
         0
     );
 
-    char texto[16];
-    snprintf(texto, sizeof(texto), "%d/%d", energiaAtual, energiaMax);
+    char textoEnergia[16];
+    snprintf(textoEnergia, sizeof(textoEnergia), "%d/%d",
+             energiaAtual, energiaMaxima);
 
-    float scale =2.8;
-    DrawCenteredScaledText(
-    renderer->font,
-    al_map_rgb(255,255,255),
-    ENERGY_X/scale,
-    (ENERGY_Y - al_get_font_line_height(renderer->font)/2) /scale,
-    scale,
-    scale,
-    texto
-    );
-}
-
-//
-// ========================================================
-//                   RENDERIZAR JOGADOR
-// ========================================================
-//
-void RenderPlayer(Renderer* renderer, Personagem* jogador)
-{
-    ALLEGRO_BITMAP* imagemJogador = renderer->img_player;
-
-    int larguraOriginal = al_get_bitmap_width(imagemJogador);
-    int alturaOriginal  = al_get_bitmap_height(imagemJogador);
-
-    float escalaJogador = 0.25f;
-
-    int larguraNova = larguraOriginal * escalaJogador;
-    int alturaNova  = alturaOriginal  * escalaJogador;
-
-    float posX = PLAYER_BEGIN_X - larguraNova / 2.0f;
-    float posY = PLAYER_BEGIN_Y - alturaNova  / 2.0f;
-
-    al_draw_scaled_bitmap(
-        imagemJogador,
-        0, 0, larguraOriginal, alturaOriginal,
-        posX, posY,
-        larguraNova, alturaNova,
-        0
-    );
-
-    RenderHealthBar(
-        posX,
-        posX + larguraNova,
-        posY + alturaNova + 10,
-        jogador->base.vida,
-        100,
-        renderer->font
-    );
-
-    RenderShieldBar(
-        posX,
-        posX + larguraNova,
-        posY + alturaNova + 35,
-        jogador->base.escudo,
-        100,
-        renderer->font
-    );
-}
-
-//
-// ========================================================
-//          RENDERIZAÇÃO DAS CARTAS / MÃO
-// ========================================================
-//
-void RenderCard(const Renderer* renderer, Carta* carta, int x_left, int y_top, int selecionada)
-{
-    ALLEGRO_BITMAP* anterior = al_get_target_bitmap();
-    al_set_target_bitmap(renderer->display_buffer);
-
-    ALLEGRO_BITMAP* imagem;
-
-    if (carta->tipo == ATAQUE)
-        imagem = renderer->img_card_ataque;
-    else if (carta->tipo == DEFESA)
-        imagem = renderer->img_card_defesa;
-    else
-        imagem = renderer->img_card_especial;
-
-    float escala = 0.30f;
-
-    int wOriginal = al_get_bitmap_width(imagem);
-    int hOriginal = al_get_bitmap_height(imagem);
-
-    int wNovo = wOriginal * escala;
-    int hNovo = hOriginal * escala;
-
-    al_draw_scaled_bitmap(
-        imagem,
-        0, 0,
-        wOriginal, hOriginal,
-        x_left,
-        y_top,
-        wNovo,
-        hNovo,
-        0
-    );
-
-    char textoCusto[32];
-    snprintf(textoCusto, sizeof(textoCusto), "Custo: %d", carta->custo);
-
-    float escalaTexto = 1.7f;
+    float escalaTexto = 2.8f;
 
     DrawCenteredScaledText(
-        renderer->font,
-        al_map_rgb(255,255,0),
-        (x_left + wNovo/2.0f) / escalaTexto,
-        (y_top + 30) / escalaTexto,
-        escalaTexto,
-        escalaTexto,
-        textoCusto
-    );
-
-    char textoEfeito[32];
-    snprintf(textoEfeito, sizeof(textoEfeito), "Efeito: %d", carta->efeito);
-
-    DrawCenteredScaledText(
-        renderer->font,
+        renderizador->font,
         al_map_rgb(255,255,255),
-        (x_left + wNovo/2.0f) / escalaTexto,
-        (y_top + hNovo - 30) / escalaTexto,
-        escalaTexto,
-        escalaTexto,
-        textoEfeito
+        ENERGY_X / escalaTexto,
+        (ENERGY_Y - al_get_font_line_height(renderizador->font)/2) / escalaTexto,
+        escalaTexto, escalaTexto,
+        textoEnergia
     );
-
-    if (selecionada)
-    {
-        al_draw_rectangle(
-            x_left + 3, y_top + 3,
-            x_left + wNovo - 3,
-            y_top + hNovo - 3,
-            al_map_rgb(255,255,0),
-            4
-        );
-    }
-
-    al_set_target_bitmap(anterior);
-}
-
-void RenderPlayerHand(Renderer* renderer, Mao *mao, Combate *combate)
-{
-    if (mao->quantidade == 0) return;
-
-    ALLEGRO_BITMAP* img = renderer->img_card_ataque;
-
-    int wOriginal = al_get_bitmap_width(img);
-    float escala = 0.30f;
-    int wNovo = wOriginal * escala;
-
-    float totalWidth = mao->quantidade * wNovo +
-                       (mao->quantidade - 1) * CARDS_SPACING;
-
-    float startX = (DISPLAY_WIDTH - totalWidth) / 2.0f;
-
-    for (int i = 0; i < mao->quantidade; i++)
-    {
-        float x = startX + i * (wNovo + CARDS_SPACING);
-        int selecionada = (i == combate->cartaSelecionada);
-
-        RenderCard(renderer, &mao->cartas[i], x, HAND_BEGIN_Y, selecionada);
-    }
-}
-
-//
-// ========================================================
-//                  RENDERIZAÇÃO DOS INIMIGOS
-// ========================================================
-//
-void RenderEnemiesIntents(Renderer* renderer, Combate* combate)
-{
-    int posXAtual = ENEMY_BEGIN_X;
-
-    for (int i = 0; i < NUMINIMIGOS; i++)
-    {
-        Inimigo* inimigo = &combate->inimigos[i];
-
-        if (inimigo->base.vida <= 0)
-            continue;
-
-        ALLEGRO_BITMAP* img;
-        float escala;
-
-        if (inimigo->forca == 1)
-        {
-            img = renderer->img_enemy;
-            escala = 0.30f;
-        }
-        else
-        {
-            img = renderer->img_weak_enemy;
-            escala = 0.25f;
-        }
-
-        int wOriginal = al_get_bitmap_width(img);
-        int hOriginal = al_get_bitmap_height(img);
-
-        int w = wOriginal * escala;
-        int h = hOriginal * escala;
-
-        int posY = ENEMY_BEGIN_Y - h;
-
-        Carta acao = inimigo->acoes[inimigo->acaoAtual];
-
-        char texto[64];
-
-        if (acao.tipo == ATAQUE)
-            snprintf(texto, sizeof(texto), "Ataque (%d)", acao.efeito);
-        else if (acao.tipo == DEFESA)
-            snprintf(texto, sizeof(texto), "Defesa (%d)", acao.efeito);
-        else
-            snprintf(texto, sizeof(texto), "Esp (%d)", acao.efeito);
-
-        float textoX = posXAtual + w / 2.0f;
-        float textoY = posY - 20;
-
-        float esc = 1.6f;
-
-        DrawScaledText(
-            renderer->font,
-            al_map_rgb(255,255,255),
-            textoX / esc,
-            textoY / esc,
-            esc, esc,
-            ALLEGRO_ALIGN_CENTRE,
-            texto
-        );
-
-        posXAtual += w + ENEMY_SPACING;
-    }
-}
-
-void RenderEnemies(Renderer* renderer, Combate* combate)
-{
-    int posXAtual = ENEMY_BEGIN_X;
-
-    for (int i = 0; i < NUMINIMIGOS; i++)
-    {
-        Inimigo* inimigo = &combate->inimigos[i];
-
-        if (inimigo->base.vida <= 0)
-            continue;
-
-        ALLEGRO_BITMAP* img;
-        float escala;
-
-        if (inimigo->forca == 1)
-        {
-            img = renderer->img_enemy;
-            escala = 0.30f;
-        }
-        else
-        {
-            img = renderer->img_weak_enemy;
-            escala = 0.25f;
-        }
-
-        int wOriginal = al_get_bitmap_width(img);
-        int hOriginal = al_get_bitmap_height(img);
-
-        int w = wOriginal * escala;
-        int h = hOriginal * escala;
-
-        int posY = ENEMY_BEGIN_Y - h;
-
-        al_draw_scaled_bitmap(
-            img,
-            0, 0, wOriginal, hOriginal,
-            posXAtual, posY,
-            w, h,
-            0
-        );
-
-        if (combate->alvoSelecionado == i &&
-            combate->estadoSelecao == SELECIONANDO_INIMIGO)
-        {
-            al_draw_rectangle(
-                posXAtual - 4, posY - 4,
-                posXAtual + w + 4, posY + h + 4,
-                al_map_rgb(255, 255, 0),
-                4
-            );
-        }
-
-        RenderHealthBar(
-            posXAtual,
-            posXAtual + w,
-            posY + h + 10,
-            inimigo->base.vida,
-            inimigo->vidaMax,
-            renderer->font
-        );
-
-        RenderShieldBar(
-            posXAtual,
-            posXAtual + w,
-            posY + h + 35,
-            inimigo->base.escudo,
-            inimigo->vidaMax,
-            renderer->font
-        );
-
-        posXAtual += w + ENEMY_SPACING;
-    }
-
-    RenderEnemiesIntents(renderer, combate);
 }
 
 //
