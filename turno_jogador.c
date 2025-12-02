@@ -60,7 +60,6 @@ void iniciarTurnoJogador(Combate *combate){
     combate->cartaSelecionada = 0;
     combate->estadoSelecao = SELECIONANDO_CARTA;
     combate->energia = 3;
-	combate->jogador.base.escudo = 0;
 	combate->mao.quantidade = 0; // zera a mão antes de comprar novas cartas
 	comprar5Cartas(&(combate->pilhaCompras),&(combate->pilhaDescarte),&(combate->mao));
 }

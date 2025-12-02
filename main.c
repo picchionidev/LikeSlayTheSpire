@@ -298,7 +298,7 @@ int main() {
 
             // Atualiza vida persistente
             jogador_inicial.base.vida = combate.jogador.base.vida;
-
+            jogador_inicial.base.escudo = 0;
             // Inicia próximo combate
             combate.jogador = jogador_inicial;
             iniciarCombate(&combate, baralho_inicial, MAX_CARTAS);
