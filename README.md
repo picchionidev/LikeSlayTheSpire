@@ -18,8 +18,8 @@ O jogo segue a estrutura de um deck-builder por turnos: o jogador utiliza cartas
 | **Enter** | Selecionar carta ou confirmar alvo |
 | **ESC** | Encerrar o turno do jogador |
 | **Q** | Sair do jogo |
-| **Espaço** | Reduz a vida de todos os inimigos para 0 (debug) |
-| **X** | Reduz a vida do jogador para 1 (debug) |
+| **Espaço** | Reduz a vida de todos os inimigos para 0 (cheat) |
+| **X** | Reduz a vida do jogador para 1 (cheat) |
 
 ---
 
