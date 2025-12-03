@@ -446,7 +446,7 @@ void RenderPlayerHand(Renderer* render, Mao *mao, Combate *combate)
 {
     if (mao->quantidade == 0) return;
 
-    ALLEGRO_BITMAP* imgTemp = render->img_card_ataque;
+    ALLEGRO_BITMAP* imgTemp = render->img_card_ataque; // Usada pra pegar as Medidas
 
     int larguraOriginal = al_get_bitmap_width(imgTemp);
     float escala = 0.30f;

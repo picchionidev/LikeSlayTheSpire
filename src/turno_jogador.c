@@ -104,7 +104,7 @@ int jogarCarta(Combate *combate, int indiceCarta, int alvo) {
 
         
         
-        // Se o inimigo morrer, volta para seleção de carta e decrementa NumImnimigosVivos
+        // Se o inimigo morrer, volta para seleção de carta  e ajusta a seleção do inimigo
             if (cartaEscolhida.tipo == ATAQUE && inimigoMorreu) {
                 // Ajusta a seleção (muda 'alvo' se estiver morto)
                 AjustarSelecaoInimigo(combate);
