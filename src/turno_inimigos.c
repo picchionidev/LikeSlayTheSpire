@@ -12,6 +12,8 @@ void turnoInimigos(Combate *combate) {
 
     // Cada inimigo realiza sua ação da vez
     for (int i = 0; i < NUMINIMIGOS; i++) {
+        //Checa se Inimigo existe
+        if(combate->inimigos[i].base.vida<=0)continue;
         // Executa a ação atual do inimigo contra o jogador
         executarAcao(
             combate->inimigos[i].acoes[combate->inimigos[i].acaoAtual],

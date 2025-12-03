@@ -155,12 +155,13 @@ int main() {
                 combate.cartaSelecionada--;
 
             else if (combate.estadoSelecao == SELECIONANDO_INIMIGO) {
+                //Lógica pra não selecionar inimigos mortos
                 int novo = combate.alvoSelecionado - 1;
 
                 while (novo >= 0 && combate.inimigos[novo].base.vida <= 0)
                     novo--;
 
-                if (novo >= 0)
+                if (novo >= 0) //Se não tiver nenhum nuvo será = -1 e o alvo nao sera alterado
                     combate.alvoSelecionado = novo;
         }
 
@@ -174,6 +175,7 @@ int main() {
                 combate.cartaSelecionada++;
 
             else if (combate.estadoSelecao == SELECIONANDO_INIMIGO) {
+                //Lógica pra não selecionar inimigos mortos
                 int novo = combate.alvoSelecionado + 1;
 
                 // pular mortos
@@ -181,7 +183,7 @@ int main() {
                     novo++;
 
                 // só muda se encontrou vivo
-                if (novo < NUMINIMIGOS)
+                if (novo < NUMINIMIGOS)//Se não tiver nenhum novo será = NUMINIMIGOS e o alvo nao sera alterado
                     combate.alvoSelecionado = novo;
             }
 
@@ -205,7 +207,7 @@ int main() {
                         // Checa a quantidade de energia restante
                         if (combate.energia < cartaAtual.custo) {
                             //ignora o ENTER
-                            continue;;
+                            continue;
                         }
                         
                         // Precisa escolher inimigo

@@ -74,6 +74,7 @@ void iniciarTurnoJogador(Combate *combate){
     combate->energia = 3;
 	combate->mao.quantidade = 0; // zera a mão antes de comprar novas cartas
 	comprar5Cartas(&(combate->pilhaCompras),&(combate->pilhaDescarte),&(combate->mao));
+    combate->jogador.base.escudo=0;//Zera escudo entre turnos ---> Regra Do enunciado
 }
 int jogarCarta(Combate *combate, int indiceCarta, int alvo) {
     // Pega a carta escolhida da mão do jogador
