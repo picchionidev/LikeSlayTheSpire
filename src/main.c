@@ -210,28 +210,25 @@ int main() {
                             continue;
                         }
                         
-                        // Precisa escolher inimigo
+                        // Precisa escolher inimigo 
                         combate.estadoSelecao = SELECIONANDO_INIMIGO;
                         
-                        // Ajusta imediatamente para um inimigo vivo
+                        // Ajusta imediatamente para um inimigo vivo antes de se iinicar a seleção deles
                         AjustarSelecaoInimigo(&combate);
-                        
-                        // ajusta seleção para evitar índice fora da mão
-                        if (combate.cartaSelecionada >= combate.mao.quantidade)
-                            combate.cartaSelecionada = combate.mao.quantidade - 1;
-                        
+                         
                     }
                     else {
                         // DEFESA ou ESPECIAL -> joga direto
                         jogarCarta(&combate, combate.cartaSelecionada, 0);
                         combate.estadoSelecao = SELECIONANDO_CARTA;
-                        // ajusta seleção para evitar índice fora da mão
+                        // Garante que o índice da carta selecionada ainda seja válido após a remoção da carta(pelo JogarCarta)
                         if (combate.cartaSelecionada >= combate.mao.quantidade)
                             combate.cartaSelecionada = combate.mao.quantidade - 1;
                         
                     }
                 }
                 else {// Segundo estado: selecionando inimigo
+                    //Garante pela segunda vez que inimigos mortos não serao atacados
                     if (combate.inimigos[combate.alvoSelecionado].base.vida <= 0) {
                         // volta para escolher carta
                         combate.estadoSelecao = SELECIONANDO_CARTA;
@@ -242,7 +239,7 @@ int main() {
                     combate.estadoSelecao = SELECIONANDO_CARTA;
                     combate.alvoSelecionado = 0;
 
-
+                    // Garante que o índice da carta selecionada ainda seja válido após a remoção da carta(pelo JogarCarta)
                     if (combate.mao.quantidade == 0)
                         combate.cartaSelecionada = 0;
                     else if (combate.cartaSelecionada >= combate.mao.quantidade)
