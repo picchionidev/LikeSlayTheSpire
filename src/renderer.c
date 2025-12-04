@@ -110,6 +110,25 @@ void FillRenderer(Renderer* renderer) {
 // ========================================================
 //      RENDERIZAÇÕES SIMPLES / TELAS ESTÁTICAS
 // ========================================================
+void DrawCombatCounter(Renderer *renderer, int combateAtual) {
+    char texto[64];
+    sprintf(texto, "Combate %d/10", combateAtual);
+
+    float escala = 3.0f;
+    float x = (DISPLAY_BUFFER_WIDTH - 50);
+    float y = 50 ;
+
+    DrawScaledText(
+        renderer->font,
+        al_map_rgb(255, 255, 255),
+        x / escala, y / escala,
+        escala, escala,
+        ALLEGRO_ALIGN_RIGHT,
+        texto
+    );
+}
+
+
 void RenderBackground(Renderer* render) {
     al_draw_scaled_bitmap(
         render->img_bg,
@@ -619,7 +638,7 @@ void RenderEnemies(Renderer* render, Combate* combate)
 //                  FUNÇÃO PRINCIPAL DE RENDER
 // ========================================================
 //
-void Render(Renderer* renderer, Combate *combate) {
+void Render(Renderer* renderer, Combate *combate,int vitorias) {
     al_set_target_bitmap(renderer->display_buffer);
     al_set_new_bitmap_flags(ALLEGRO_VIDEO_BITMAP | ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
 
@@ -633,6 +652,10 @@ void Render(Renderer* renderer, Combate *combate) {
     RenderEnergy(renderer,combate->energia, 3);
     RenderEnemies(renderer, combate);
     RenderPlayerHand(renderer,&combate->mao,combate);
+    if (renderer->screen == SCREEN_COMBAT) {
+    DrawCombatCounter(renderer,vitorias + 1);
+    }
+
 
     al_set_target_backbuffer(renderer->display);
 

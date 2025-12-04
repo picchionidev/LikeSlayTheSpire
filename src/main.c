@@ -42,6 +42,8 @@ int main() {
 
     Renderer renderer;
     FillRenderer(&renderer);
+    renderer.screen = SCREEN_COMBAT;   // começa na tela de combate 
+
     al_register_event_source(queue,
                              al_get_display_event_source(renderer.display));
 
@@ -258,6 +260,7 @@ int main() {
             if (status == -1) {
                 vitorias = 0;
                 // Mostra tela de Game Over
+                renderer.screen = SCREEN_GAME_OVER;//Marca mudança de tela
                 RenderGameOverScreen(&renderer);
 
                 // Espera qualquer tecla
@@ -283,6 +286,7 @@ int main() {
                 combate.jogador = jogador_inicial;
                 iniciarCombate(&combate, baralho_inicial, MAX_CARTAS);
                 iniciarTurnoJogador(&combate);
+                renderer.screen = SCREEN_COMBAT;//Marca Volta da tela de combate
             }
 
         // ------------------ VITÓRIA ------------------
@@ -290,7 +294,7 @@ int main() {
             vitorias++;
             // -------------- VITÓRIA FINAL --------------
             if (vitorias >= VITORIAS_PARA_VENCER) {
-
+                renderer.screen = SCREEN_FINAL_VICTORY;//Marca mudança de tela
                 RenderVictoryScreen(&renderer, vitorias);
 
                 ALLEGRO_EVENT e;
@@ -310,6 +314,7 @@ int main() {
             }
 
             // -------------- VITÓRIA NORMAL --------------
+            renderer.screen = SCREEN_VICTORY;//Marca Mudança de tela
             RenderCombatVictory(&renderer);
 
             ALLEGRO_EVENT e;
@@ -331,6 +336,7 @@ int main() {
             combate.jogador = jogador_inicial;
             iniciarCombate(&combate, baralho_inicial, MAX_CARTAS);
             iniciarTurnoJogador(&combate);
+            renderer.screen = SCREEN_COMBAT;//Marca Volta da tela de combate
         }
         }
 
@@ -338,7 +344,7 @@ int main() {
         // RENDER
         // =====================================================
         if (redraw) {
-            Render(&renderer,&combate);
+            Render(&renderer, &combate, vitorias);
             redraw = 0;
         }
     }

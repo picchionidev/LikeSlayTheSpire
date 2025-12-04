@@ -5,6 +5,12 @@
 #include <allegro5/allegro_font.h>
 #include "combate.h"
 
+typedef enum {
+    SCREEN_COMBAT,
+    SCREEN_GAME_OVER,
+    SCREEN_VICTORY,
+    SCREEN_FINAL_VICTORY
+} GameState;
 
 typedef struct {
     ALLEGRO_DISPLAY* display;
@@ -32,11 +38,13 @@ ALLEGRO_BITMAP *img_combat_screen;
 ALLEGRO_BITMAP *img_game_over_screen;
 ALLEGRO_BITMAP *img_victory_screen;
 
+GameState screen;
+
 } Renderer;
 
 // Funções públicas
 void FillRenderer(Renderer* renderer);
-void Render(Renderer* renderer, Combate *combate);
+void Render(Renderer* renderer, Combate *combate, int vitorias);
 void ClearRenderer(Renderer* renderer);
 void RenderVictoryScreen(Renderer* renderer, int totalVitorias);
 void RenderGameOverScreen(Renderer* renderer);
